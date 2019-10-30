@@ -7,6 +7,30 @@ var SIMPLIFY = 0.1*SCALE;
 var SIMPLIFYHQ = false;
 var TRACEWIDTH = 0.1; // in mm
 
+
+document.addEventListener("DOMContentLoaded", ready);
+
+function ready(){
+
+  let eagleLayer = document.getElementById("eagleLayer");
+  eagleLayer.addEventListener("change",(elm)=>{
+    let layerType = elm.target.value;
+    let drawingType = document.getElementById("drawingType");
+    if(layerType === 'Dimension'){
+      drawingType.value = "line"
+    } else if(layerType === 'other'){
+      
+      let eagleLayerOther = document.getElementById("eagleLayer-other");
+      eagleLayerOther.style.display = 'block';
+      drawingType.value = "polygon"
+    }else{
+      drawingType.value = "polygon"
+    }
+    
+  });
+}
+
+
 // Start file download.
 function download_script(filename, text) {
   var text = document.getElementById("result").value;
@@ -149,9 +173,14 @@ function plotPoly(points, isFilled) {
 function drawSVG() {
   if (container===undefined) return;
   var FLIP_HORIZ = document.getElementById("flipImage").checked;
-  var EAGLE_LAYER = document.getElementById("eagleLayer").value;
   var SIGNAL_NAME = document.getElementById("signalName").value;
   var EAGLE_FORMAT = document.querySelector('input[name="eagleformat"]:checked').value;
+  var DRAWING_TYPE = document.getElementById("drawingType").value;
+
+  var EAGLE_LAYER = document.getElementById("eagleLayer").value;
+  if(EAGLE_LAYER === 'other'){
+      EAGLE_LAYER = document.getElementById("eagleLayer-other").value;
+  }
 
   container.style.display="block";
 
@@ -275,15 +304,15 @@ function drawSVG() {
         points.push(points[0]);
 
         if (EAGLE_FORMAT == "board") {
-          scriptLine = "polygon "+SIGNAL_NAME+" "+TRACEWIDTH+"mm"
+          scriptLine = `${DRAWING_TYPE} ${SIGNAL_NAME} ${TRACEWIDTH}mm`//DRAWING_TYPE + " "+SIGNAL_NAME+" "+TRACEWIDTH+"mm"
         } if (EAGLE_FORMAT == "library") {
-          scriptLine = "polygon "+TRACEWIDTH+"mm"
+          scriptLine = `${DRAWING_TYPE} ${TRACEWIDTH}mm`//DRAWING_TYPE + " "+TRACEWIDTH+"mm"
         }
       } else {
         if (EAGLE_FORMAT == "board") {
-          scriptLine = "polygon "+SIGNAL_NAME+" "+TRACEWIDTH+"mm"
+          scriptLine = `${DRAWING_TYPE} ${SIGNAL_NAME} ${TRACEWIDTH}mm`//DRAWING_TYPE + " "+SIGNAL_NAME+" "+TRACEWIDTH+"mm"
         } if (EAGLE_FORMAT == "library") {
-          scriptLine = "polygon "+TRACEWIDTH+"mm"
+          scriptLine = `${DRAWING_TYPE} ${TRACEWIDTH}mm`//DRAWING_TYPE + " "+TRACEWIDTH+"mm"
         }
       }
       points.forEach(function(p) { scriptLine += ` (${p.x.toFixed(6)}mm ${(exportHeight-p.y).toFixed(6)}mm)`});
