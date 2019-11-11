@@ -178,6 +178,7 @@ function drawSVG() {
   var DRAWING_TYPE = document.getElementById("drawingType").value;
 
   var EAGLE_LAYER = document.getElementById("eagleLayer").value;
+  var EAGLE_RANK = document.getElementById("eagleRank").value;
   if(EAGLE_LAYER === 'other'){
       EAGLE_LAYER = document.getElementById("eagleLayer-other").value;
   }
@@ -237,7 +238,7 @@ function drawSVG() {
   DRAWSCALE = drawMultiplier / SCALE;
 
   if (EAGLE_FORMAT == "board") {
-    out("CHANGE layer "+EAGLE_LAYER+"; CHANGE rank 3; CHANGE pour solid; SET WIRE_BEND 2;\n");
+    out("CHANGE layer "+EAGLE_LAYER+"; CHANGE rank "+EAGLE_RANK+"; CHANGE pour solid; SET WIRE_BEND 2;\n");
   } if (EAGLE_FORMAT == "library") {
     out("CHANGE layer "+EAGLE_LAYER+"; CHANGE pour solid; Grid mm; SET WIRE_BEND 2;\n");
   }
